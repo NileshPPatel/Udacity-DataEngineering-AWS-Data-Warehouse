@@ -12,8 +12,14 @@ def drop_tables(cur, conn):
     * conn the database connection
     """
     for query in drop_table_queries:
-        cur.execute(query)
-        conn.commit()
+        try:
+            cur.execute(query)
+            conn.commit()
+        except psycopg2.Error as e:
+            print("Error: Issue dropping table: " + query)
+            print(e)
+
+    print("Tables have been dropped successfully.")
 
 
 def create_tables(cur, conn):
@@ -25,8 +31,14 @@ def create_tables(cur, conn):
     * conn the database connection
     """
     for query in create_table_queries:
-        cur.execute(query)
-        conn.commit() 
+        try:
+            cur.execute(query)
+            conn.commit()
+        except psycopg2.Error as e:
+            print("Error: Issue creating table: " + query)
+            print(e)
+            
+    print("Tables have been created successfully.")
 
 def main():
     config = configparser.ConfigParser()
